@@ -292,6 +292,9 @@ class RankGenerator(object):
             order = self.order_wo_ep
         mask = self.get_mask(order, token)
         ranks = generate_masked_orthogonal_rank_groups(self.world_size, parallel_size, mask)
+        min_node_count = max(parallel_size) * self.world_size 
+        if len(ranks) == 0 and min_node_count == 1:
+            ranks = [[0]]
         return ranks
 
 
